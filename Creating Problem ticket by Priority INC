@@ -1,0 +1,17 @@
+// Create problem ticket from P1 incidents
+//Business Rule to trigger condition when State is Resolved and Priority is 1-critical
+
+
+(function executeRule(current, previous /*null when async*/) {
+    var gRproblem = new GlideRecord("problem"); // fetching problem table 
+    gRproblem.newRecord(); // Creating new Record 
+
+    gRproblem.short_description = current.short_description; // Adding Short description in the problem ticket
+    gRproblem.description = current.description; // Adding description in the problem ticket
+    gRproblem.assignment_group = current.assignment_group; // Adding assignment group in the problem ticket
+    gRproblem.assigned_to = current.assigned_to; // Adding assignment to  in the problem ticket
+	current.problem_id = gRproblem.sys_id; // Incident Record will add in the Related List of incidents in the Problem form. 
+	gRproblem.parent = current.sys_id; // PRB ticket will add in the Incident Record in the Related list field. 
+    gRproblem.insert(); //It will create PRB ticket 
+
+})(current, previous);
